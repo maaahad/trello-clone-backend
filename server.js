@@ -2,21 +2,26 @@
 // imporging modules
 const express = require("express");
 
-// ----------------------------------------------------------- //
-// || test : db connection
-const db = require("./lib/database/db");
+// routers
+const accountRouter = require("./lib/routes/account");
 
 // an instance of express app and a port to start the app
 const app = express();
 
 // ----------------------------------------------------------- //
 // middlewares
+// bodyparser
+app.use(express.json());
 
 // ----------------------------------------------------------- //
 // || test
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Success ... WOW !!!" });
 });
+
+// ----------------------------------------------------------- //
+// adding routers
+app.use("/account", accountRouter);
 
 // ----------------------------------------------------------- //
 // custom 404 and 500 response
