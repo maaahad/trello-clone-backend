@@ -1,0 +1,36 @@
+{
+  "name": "trello-clone-backend",
+  "version": "1.0.0",
+  "description": "This is the backend for Trello Clone",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest",
+    "dev": "NODE_ENV=development nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maaahad/trello-clone-backend.git"
+  },
+  "keywords": [
+    "backend",
+    "express",
+    "mongoose",
+    "mongodb",
+    "trello",
+    "clone",
+    "training",
+    "nodejs"
+  ],
+  "author": "Muhammed Abdullah Al Ahad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maaahad/trello-clone-backend/issues"
+  },
+  "homepage": "https://github.com/maaahad/trello-clone-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^6.0.8",
+    "nodemon": "^2.0.13"
+  }
+}
