@@ -2,6 +2,9 @@
 // imporging modules
 const express = require("express");
 
+// middlewares
+const loggingMiddleware = require("./lib/middlewares/logging");
+
 // routers
 const accountRouter = require("./lib/routes/account");
 
@@ -12,6 +15,9 @@ const app = express();
 // middlewares
 // bodyparser
 app.use(express.json());
+
+// logging
+loggingMiddleware(app);
 
 // ----------------------------------------------------------- //
 // || test
