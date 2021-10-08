@@ -2,11 +2,11 @@
   "name": "trello-clone-backend",
   "version": "1.0.0",
   "description": "This is the backend for Trello Clone",
-  "main": "server.js",
+  "main": "server-cluster.js",
   "scripts": {
     "test": "jest",
     "dev": "NODE_ENV=development nodemon server.js",
-    "start": "node server.js"
+    "start": "node server-cluster.js"
   },
   "repository": {
     "type": "git",
