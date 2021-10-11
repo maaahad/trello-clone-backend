@@ -1,6 +1,7 @@
 // ----------------------------------------------------------- //
 // imporging modules
 const express = require("express");
+const cors = require("cors");
 
 // middlewares
 const loggingMiddleware = require("./lib/middlewares/logging");
@@ -13,6 +14,12 @@ const app = express();
 
 // ----------------------------------------------------------- //
 // middlewares
+
+// cors
+// we need to use cors to make the api public
+// || todo : add fine-grained control case-by-case
+app.use("/account", cors());
+
 // bodyparser
 app.use(express.json());
 
