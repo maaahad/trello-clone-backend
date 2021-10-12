@@ -67,7 +67,7 @@ function startServer(port) {
 // making this file to behave line top level script and a module as well
 if (require.main === module) {
   // this is top level script
-  startServer(process.env.PORT || 3000);
+  startServer(process.env.PORT || 3033);
 } else {
   // this is module
   module.exports = startServer;
