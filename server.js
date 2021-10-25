@@ -2,9 +2,16 @@
 // imporging modules
 const express = require("express");
 const cors = require("cors");
+const expressSession = require("express-session");
 
 // middlewares
 const loggingMiddleware = require("./lib/middlewares/logging");
+
+// auth middlewares
+const createAuth = require("./lib/auth");
+
+// credentials
+const { credentials } = require("./config");
 
 // routers
 const accountRouter = require("./lib/routes/account");
@@ -12,8 +19,25 @@ const accountRouter = require("./lib/routes/account");
 // an instance of express app and a port to start the app
 const app = express();
 
+// get an instance of auth
+const auth = createAuth(app, {
+  baseUrl: "http://localhost:3033",
+  successRedirect: "/user/home",
+  failureRedirect: "/please/login",
+  providers: credentials.authProviders,
+});
+
 // ----------------------------------------------------------- //
 // middlewares
+
+// session
+app.use(
+  expressSession({
+    resave: false,
+    saveUninitialized: false,
+    secret: "__anabia_ahad__",
+  })
+);
 
 // cors
 // we need to use cors to make the api public
@@ -26,6 +50,10 @@ app.use(express.json());
 // logging
 loggingMiddleware(app);
 
+// init and register routes for auth
+auth.init();
+auth.registerRoutes();
+
 // ----------------------------------------------------------- //
 // || test
 app.get("/", (req, res) => {
@@ -35,6 +63,27 @@ app.get("/", (req, res) => {
 // ----------------------------------------------------------- //
 // adding routers
 app.use("/account", accountRouter);
+
+// ----------------------------------------------------------- //
+// || testing : third party auth
+app.get("/user/home", (req, res) => {
+  if (!req.user) return res.redirect(303, "/unauthorized");
+
+  res.status(200).json({ success: "success", user: req.user });
+});
+
+app.get("/please/login", (req, res) => {
+  res.status(200).json({ message: "please log in" });
+});
+
+app.get("/unauthorized", (req, res) => {
+  res.status(403).json({ message: "You are not authorized" });
+});
+
+app.get("/logout", (req, res) => {
+  req.logout();
+  res.redirect("/");
+});
 
 // ----------------------------------------------------------- //
 // custom 404 and 500 response
@@ -47,10 +96,10 @@ app.use((req, res) => {
 });
 
 // 500
-app.use((req, res, error, next) => {
+app.use((error, req, res, next) => {
   console.error(error.message);
   res.type("text/plain");
-  res.status(500).send("500 - Server Error");
+  res.status(500).send("500 - Server Error : " + error);
 });
 
 // ----------------------------------------------------------- //
