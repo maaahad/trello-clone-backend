@@ -57,7 +57,18 @@ auth.registerRoutes();
 // ----------------------------------------------------------- //
 // || test
 app.get("/", (req, res) => {
-  res.status(200).json({ message: "Success ... WOW !!!" });
+  const availableRoutes = {
+    account: {
+      getUserByEmail: "/account/user/email",
+      getWorkspaceById: "/account/workspace/id",
+      getBoardById: "/account/board/id",
+      getCardById: "/account/card/id",
+      signup: "/account/user/signup",
+      login: "/account/user/login",
+      logout: "/account/user/logout",
+    },
+  };
+  res.status(200).json(availableRoutes);
 });
 
 // ----------------------------------------------------------- //
@@ -81,6 +92,7 @@ app.get("/unauthorized", (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
+  // change the database to set loggedin to false
   req.logout();
   res.redirect("/");
 });
