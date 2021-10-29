@@ -43,6 +43,7 @@ app.use(
 // we need to use cors to make the api public
 // || todo : add fine-grained control case-by-case
 app.use("/account", cors());
+app.use("/auth", cors());
 
 // bodyparser
 app.use(express.json());
@@ -63,9 +64,12 @@ app.get("/", (req, res) => {
       getWorkspaceById: "/account/workspace/id",
       getBoardById: "/account/board/id",
       getCardById: "/account/card/id",
-      signup: "/account/user/signup",
-      login: "/account/user/login",
       logout: "/account/user/logout",
+    },
+    auth: {
+      facebook: "/auth/facebook",
+      "inhouse-signup": "/auth/signup/inhouse",
+      "inhouse-login": "/auth/login/inhouse",
     },
   };
   res.status(200).json(availableRoutes);
