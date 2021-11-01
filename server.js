@@ -16,6 +16,9 @@ const { credentials } = require("./config");
 // routers
 const accountRouter = require("./lib/routes/account");
 
+// email
+const mailTransport = require("./lib/email");
+
 // an instance of express app and a port to start the app
 const app = express();
 
@@ -73,6 +76,36 @@ app.get("/", (req, res) => {
     },
   };
   res.status(200).json(availableRoutes);
+});
+
+// || testing emial sendind
+app.get("/send-email", (req, res) => {
+  // reference
+  // https://github.com/nodemailer/nodemailer-sendgrid/blob/master/examples/mail.js
+  mailTransport
+    .sendMail({
+      // from: '"Trello-clone-maaahad" <do-not-reply@trello-clone-maaahad.com>',
+      from: "Trello Clone - maaahad <maaahad@gmail.com>",
+      to: "Muhammed Ahad <ahad3112@yahoo.com>",
+      subject:
+        "Testing mail sending form Trello clone using Nodemailer and SendGrid",
+      html: "<h1>This is a testing mail from Trello clone using nodemailer</h1>",
+    })
+    .then(([res]) =>
+      console.log(
+        `Message delivered with status code ${res.statusCode} ${res.statusMessage}`
+      )
+    )
+    .catch((error) => {
+      console.log("Error occured. Failed to deliver message.");
+      if (error.response && error.response.body && error.response.body.errors) {
+        error.response.body.errors.forEach((error) =>
+          console.log(`${error.field} : ${error.message}`)
+        );
+      } else {
+        console.log(error);
+      }
+    });
 });
 
 // ----------------------------------------------------------- //
