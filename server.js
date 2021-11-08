@@ -17,7 +17,7 @@ const { credentials } = require("./config");
 const accountRouter = require("./lib/routes/account");
 
 // email
-const mailTransport = require("./lib/email");
+const emailService = require("./lib/email")(credentials);
 
 // an instance of express app and a port to start the app
 const app = express();
@@ -82,20 +82,18 @@ app.get("/", (req, res) => {
 app.get("/send-email", (req, res) => {
   // reference
   // https://github.com/nodemailer/nodemailer-sendgrid/blob/master/examples/mail.js
-  mailTransport
-    .sendMail({
-      // from: '"Trello-clone-maaahad" <do-not-reply@trello-clone-maaahad.com>',
-      from: "Trello Clone - maaahad <maaahad@gmail.com>",
-      to: "Muhammed Ahad <ahad3112@yahoo.com>",
-      subject:
-        "Testing mail sending form Trello clone using Nodemailer and SendGrid",
-      html: "<h1>This is a testing mail from Trello clone using nodemailer</h1>",
-    })
-    .then(([res]) =>
-      console.log(
-        `Message delivered with status code ${res.statusCode} ${res.statusMessage}`
-      )
+  emailService
+    .send(
+      "Anabiar Maa <isratjahan1988@gmail.com>",
+      "Testing Trello Clone",
+      "<h1>Kemon asen anabiar MAA....</h1>"
     )
+    .then(([result]) => {
+      console.log(
+        `Message delivered with status code ${result.statusCode} ${result.statusMessage}`
+      );
+      res.status(200).json({ message: "success" });
+    })
     .catch((error) => {
       console.log("Error occured. Failed to deliver message.");
       if (error.response && error.response.body && error.response.body.errors) {
